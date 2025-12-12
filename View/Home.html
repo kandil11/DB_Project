@@ -707,7 +707,19 @@
       color: rgba(255, 255, 255, 0.6);
     }
 
-    /* Responsive Design */
+    /* Responsive Design - Tablet */
+    @media (max-width: 992px) {
+      .services-grid,
+      .categories-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .footer-content {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* Responsive Design - Mobile */
     @media (max-width: 768px) {
       .mobile-menu-toggle {
         display: flex;
@@ -715,15 +727,44 @@
 
       .navbar-content {
         position: relative;
-        padding-left: 4rem;
+        padding: 0 1rem;
+        flex-wrap: wrap;
+        justify-content: space-between;
       }
 
       .nav-menu {
         display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--white);
+        flex-direction: column;
+        padding: 1rem;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        z-index: 1000;
+      }
+
+      .nav-menu.active {
+        display: flex;
+      }
+
+      .nav-menu li {
+        width: 100%;
+      }
+
+      .nav-menu a {
+        display: block;
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid var(--border-gray);
       }
 
       .search-container {
         display: none;
+      }
+
+      .nav-actions {
+        gap: 0.5rem;
       }
 
       .auth-buttons {
@@ -731,47 +772,131 @@
       }
 
       .auth-buttons button {
-        padding: 0.5rem 1rem;
-        font-size: 0.8rem;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.75rem;
       }
 
       .dropdown-content {
-        right: -1rem;
-        min-width: 180px;
+        position: fixed;
+        top: auto;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        border-radius: 12px 12px 0 0;
+        min-width: 100%;
+        max-height: 50vh;
+        overflow-y: auto;
+      }
+
+      .hero {
+        padding: 2rem 1rem;
+        min-height: 60vh;
       }
 
       .hero h1 {
-        font-size: 2rem;
+        font-size: 1.75rem;
+        line-height: 1.3;
+      }
+
+      .hero p {
+        font-size: 1rem;
       }
 
       .hero-actions {
         flex-direction: column;
-        align-items: center;
+        align-items: stretch;
+        gap: 0.75rem;
+      }
+
+      .hero-actions .btn-primary,
+      .hero-actions .btn-secondary {
+        width: 100%;
+        text-align: center;
       }
 
       .pharmacy-info {
         flex-direction: column;
         gap: 0.5rem;
+        text-align: center;
+      }
+
+      .header-top-content {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .header-actions {
+        display: none;
       }
 
       .trust-content {
         flex-direction: column;
         text-align: center;
+        gap: 1rem;
       }
-    }
 
-    @media (max-width: 480px) {
-      .hero {
-        padding: 2rem 0;
+      .services-grid,
+      .categories-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
       }
 
       .section-title {
-        font-size: 2rem;
+        font-size: 1.75rem;
+      }
+
+      .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .cart-container {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.85rem;
+      }
+
+      .logo-name {
+        font-size: 1.25rem;
+      }
+
+      .logo-tagline {
+        font-size: 0.65rem;
+      }
+    }
+
+    /* Responsive Design - Small Mobile */
+    @media (max-width: 480px) {
+      .hero {
+        padding: 1.5rem 0.75rem;
+        min-height: 50vh;
+      }
+
+      .hero h1 {
+        font-size: 1.5rem;
+      }
+
+      .section-title {
+        font-size: 1.5rem;
       }
 
       .service-card,
       .category-card {
-        margin: 0 0.5rem;
+        margin: 0;
+      }
+
+      .navbar-content {
+        padding: 0 0.5rem;
+      }
+
+      .logo-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 1.2rem;
+      }
+
+      .auth-buttons button {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.7rem;
       }
     }
   </style>
