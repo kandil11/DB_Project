@@ -12,7 +12,7 @@ const userRoutes = require('./routes/users');
 const app = express();
 
 // MongoDB Connection with optimized settings
-// Use environment variable for production (Vercel), fallback for local development
+// Use environment variable for Vercel, fallback for local development
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://Kandil_db_user:Kandil_db_user@cluster0.tm2rhiq.mongodb.net/pharmacy_db?retryWrites=true&w=majority';
 
 mongoose.connect(MONGODB_URI, {

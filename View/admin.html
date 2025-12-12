@@ -49,189 +49,11 @@
     .form-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap:.5rem; }
     .hidden { display: none; }
     .badge { padding: .15rem .5rem; border-radius: 999px; background: rgba(0,166,81,.15); color: #69e3a5; font-weight:700; }
-    
-    /* Mobile menu toggle */
-    .mobile-sidebar-toggle {
-      display: none;
-      background: var(--primary-blue);
-      color: white;
-      border: none;
-      padding: 0.5rem;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 1.25rem;
-    }
-
-    /* Responsive Design - Tablet */
-    @media (max-width: 992px) {
-      .layout {
-        grid-template-columns: 200px 1fr;
-      }
-      
-      .sidebar {
-        padding: 0.75rem;
-      }
-      
-      .brand-name {
-        font-size: 0.9rem;
-      }
-      
-      .nav button {
-        padding: 0.6rem 0.75rem;
-        font-size: 0.9rem;
-      }
-      
-      .cards {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      
-      .form-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      
-      th, td {
-        padding: 0.5rem;
-        font-size: 0.85rem;
-      }
-    }
-
-    /* Responsive Design - Mobile */
-    @media (max-width: 768px) {
-      .layout {
-        grid-template-columns: 1fr;
-      }
-      
-      .sidebar {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 1000;
-        padding: 1rem;
-        overflow-y: auto;
-      }
-      
-      .sidebar.active {
-        display: block;
-      }
-      
-      .sidebar-close {
-        display: block;
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
-        background: var(--accent-red);
-        color: white;
-        border: none;
-        padding: 0.5rem 1rem;
-        border-radius: 8px;
-        cursor: pointer;
-      }
-      
-      .mobile-sidebar-toggle {
-        display: block;
-      }
-      
-      .header {
-        padding: 0.75rem 1rem;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-      }
-      
-      .header h1 {
-        font-size: 1rem;
-        flex: 1;
-      }
-      
-      .main {
-        padding: 0.75rem;
-      }
-      
-      .cards {
-        grid-template-columns: 1fr 1fr;
-        gap: 0.75rem;
-      }
-      
-      .card {
-        padding: 0.75rem;
-      }
-      
-      .card h3 {
-        font-size: 0.9rem;
-      }
-      
-      .toolbar {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      
-      .toolbar input,
-      .toolbar select {
-        width: 100%;
-      }
-      
-      .form-grid {
-        grid-template-columns: 1fr;
-      }
-      
-      .table-wrap {
-        font-size: 0.8rem;
-      }
-      
-      th, td {
-        padding: 0.5rem 0.35rem;
-        font-size: 0.75rem;
-      }
-      
-      .btn {
-        padding: 0.5rem 0.75rem;
-        font-size: 0.8rem;
-      }
-      
-      /* Make table scrollable */
-      .table-wrap {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-      }
-      
-      table {
-        min-width: 600px;
-      }
-    }
-
-    /* Responsive Design - Small Mobile */
-    @media (max-width: 480px) {
-      .header h1 {
-        font-size: 0.9rem;
-      }
-      
-      .cards {
-        grid-template-columns: 1fr;
-      }
-      
-      .badge {
-        font-size: 0.7rem;
-        padding: 0.1rem 0.4rem;
-      }
-      
-      .btn {
-        padding: 0.4rem 0.6rem;
-        font-size: 0.75rem;
-      }
-      
-      input, select {
-        padding: 0.5rem;
-        font-size: 0.85rem;
-      }
-    }
   </style>
 </head>
 <body>
   <div class="layout">
-    <aside class="sidebar" id="sidebar">
-      <button class="sidebar-close" onclick="toggleSidebar()" style="display:none;">✕ Close</button>
+    <aside class="sidebar">
       <a href="Home.html" class="brand" style="text-decoration:none;color:inherit;">
         <div class="brand-icon">+</div>
         <div>
@@ -248,7 +70,6 @@
     </aside>
     <div>
       <header class="header">
-        <button class="mobile-sidebar-toggle" onclick="toggleSidebar()">☰</button>
         <h1 id="sectionTitle">Overview</h1>
         <div>
           <span id="adminName" class="badge">Admin</span>
@@ -368,27 +189,6 @@
   </div>
 
   <script>
-    // Mobile sidebar toggle
-    function toggleSidebar() {
-      const sidebar = document.getElementById('sidebar');
-      const closeBtn = sidebar.querySelector('.sidebar-close');
-      sidebar.classList.toggle('active');
-      if (sidebar.classList.contains('active')) {
-        closeBtn.style.display = 'block';
-      } else {
-        closeBtn.style.display = 'none';
-      }
-    }
-
-    // Close sidebar when clicking nav button on mobile
-    document.querySelectorAll('.nav button').forEach(btn => {
-      btn.addEventListener('click', () => {
-        if (window.innerWidth <= 768) {
-          document.getElementById('sidebar').classList.remove('active');
-        }
-      });
-    });
-
     const token = localStorage.getItem('userToken');
     const userData = JSON.parse(localStorage.getItem('userData') || 'null');
     
