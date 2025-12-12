@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. Fatma Pharmacy - Customer Signup</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --color1: #B3D7E0;
+            --color2: #7FB3C1;
+            --color3: #4A9BBE;
+            --color4: #2A7A9D;
+            --color5: #1A4D6D;
+            --color1-light: #CEE7EF;
+        }
+        
+        body {
+            background-color: var(--color1-light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 1rem;
+        }
+        
+        /* Enhanced mobile-first signup container */
+        .signup-container {
+            max-width: 500px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .signup-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .signup-header h2 {
+            color: var(--color5);
+            font-weight: 600;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .signup-header p {
+            color: #666;
+            font-size: 1rem;
+        }
+        
+        /* Enhanced form styling */
+        .form-label {
+            color: var(--color4);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+        
+        .form-control {
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            min-height: 48px; /* Touch-friendly height */
+        }
+
+        .form-control:focus {
+            border-color: var(--color3);
+            box-shadow: 0 0 0 0.25rem rgba(74, 155, 190, 0.25);
+            outline: none;
+        }
+
+        .form-control:valid {
+            border-color: #28a745;
+        }
+
+        .form-control:invalid:not(:placeholder-shown) {
+            border-color: #dc3545;
+        }
+        
+        /* Enhanced textarea */
+        textarea.form-control {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Enhanced form text */
+        .form-text {
+            color: var(--color3);
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Enhanced checkbox styling */
+        .form-check {
+            margin: 1.5rem 0;
+            padding-left: 0;
+        }
+
+        .form-check-input {
+            width: 1.2rem;
+            height: 1.2rem;
+            margin-right: 0.75rem;
+            border: 2px solid var(--color3);
+            border-radius: 4px;
+        }
+
+        .form-check-input:checked {
+            background-color: var(--color3);
+            border-color: var(--color3);
+        }
+
+        .form-check-label {
+            font-size: 0.95rem;
+            line-height: 1.4;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+        
+        /* Enhanced button styling */
+        .btn-primary {
+            background-color: var(--color4);
+            border-color: var(--color4);
+            padding: 0.875rem 2rem;
+            font-weight: 600;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            min-height: 48px;
+            width: 100%;
+        }
+        
+        .btn-primary:hover,
+        .btn-primary:focus {
+            background-color: var(--color5);
+            border-color: var(--color5);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(42, 122, 157, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        
+        .logo {
+            max-height: 60px;
+            margin-bottom: 15px;
+        }
+        
+        /* Enhanced link styling */
+        .login-link {
+            color: var(--color3);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .login-link:hover {
+            color: var(--color4);
+            text-decoration: underline;
+        }
+
+        /* Back button */
+        .back-button {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background-color: var(--color1);
+            color: var(--color5);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-button:hover {
+            background-color: var(--color3);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Error states */
+        .is-invalid {
+            border-color: #dc3545;
+        }
+
+        .invalid-feedback {
+            display: block;
+            color: #dc3545;
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Success states */
+        .is-valid {
+            border-color: #28a745;
+        }
+
+        .valid-feedback {
+            display: block;
+            color: #28a745;
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Loading state */
+        .btn-loading {
+            position: relative;
+            color: transparent;
+        }
+
+        .btn-loading::after {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 50%;
+            left: 50%;
+            margin-left: -10px;
+            margin-top: -10px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Tablet styles */
+        @media (min-width: 768px) {
+            body {
+                padding: 2rem;
+            }
+
+            .signup-container {
+                margin: 3rem auto;
+                padding: 3rem;
+            }
+
+            .signup-header h2 {
+                font-size: 2.2rem;
+            }
+
+            .back-button {
+                top: 2rem;
+                left: 2rem;
+            }
+        }
+
+        /* Desktop styles */
+        @media (min-width: 1024px) {
+            .signup-container {
+                margin: 4rem auto;
+            }
+        }
+
+        /* Small mobile adjustments */
+        @media (max-width: 480px) {
+            body {
+                padding: 0.5rem;
+            }
+
+            .signup-container {
+                margin: 1rem auto;
+                padding: 1.5rem;
+                border-radius: 10px;
+            }
+
+            .signup-header h2 {
+                font-size: 1.6rem;
+            }
+
+            .form-control {
+                padding: 0.6rem 0.8rem;
+            }
+
+            .btn-primary {
+                padding: 0.75rem 1.5rem;
+            }
+
+            .back-button {
+                top: 0.5rem;
+                left: 0.5rem;
+                padding: 0.4rem 0.8rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="Home.html" class="back-button">
+        ← Back to Home
+    </a>
+
+    <div class="container">
+        <div class="signup-container">
+            <div class="signup-header">
+                <h2>Customer Signup</h2>
+                <p class="text-muted">Create your account to order medications online</p>
+            </div>
+            
+            <form id="customerSignupForm" novalidate>
+                <input type="hidden" name="usertype" value="3">
+                
+                <div class="mb-3">
+                    <label for="fullName" class="form-label">Full Name *</label>
+                    <input type="text" class="form-control" name="fullName" id="fullName" 
+                           placeholder="Enter your full name" required minlength="2">
+                    <div class="invalid-feedback">Please provide a valid full name (at least 2 characters).</div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email Address *</label>
+                    <input type="email" class="form-control" name="email" id="email" 
+                           placeholder="Enter your email address" required>
+                    <div class="invalid-feedback">Please provide a valid email address.</div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Phone Number *</label>
+                    <input type="tel" class="form-control" id="phone" name="phone" 
+                           placeholder="Enter your phone number" required pattern="[0-9]{10,15}">
+                    <div class="form-text">Enter 10-15 digits without spaces or special characters</div>
+                    <div class="invalid-feedback">Please provide a valid phone number (10-15 digits).</div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password *</label>
+                    <input type="password" class="form-control" name="password" id="password" 
+                           placeholder="Create a password" required pattern=".{8,}">
+                    <div class="form-text">Password must be at least 8 characters with letters, numbers and special characters</div>
+                    <div class="invalid-feedback">Password must be at least 8 characters long.</div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="confirmPassword" class="form-label">Confirm Password *</label>
+                    <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" 
+                           placeholder="Confirm your password" required>
+                    <div class="invalid-feedback">Passwords do not match.</div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="address" class="form-label">Shipping Address *</label>
+                    <textarea class="form-control" name="address" id="address" rows="3" 
+                              placeholder="Enter your complete shipping address" required minlength="10"></textarea>
+                    <div class="invalid-feedback">Please provide a complete shipping address (at least 10 characters).</div>
+                </div>
+                
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" name="termsCheck" id="termsCheck" required>
+                    <label class="form-check-label" for="termsCheck">
+                        I agree to the <a href="#" class="login-link">Terms and Conditions</a> and 
+                        <a href="#" class="login-link">Privacy Policy</a>
+                    </label>
+                    <div class="invalid-feedback">You must agree to the terms and conditions.</div>
+                </div>
+                
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                        Create Account
+                    </button>
+                </div>
+                
+                <div class="text-center mt-3">
+                    <p>Already have an account? <a href="login.html" class="login-link">Login here</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('customerSignupForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const passwordInput = document.getElementById('password');
+            const confirmPasswordInput = document.getElementById('confirmPassword');
+
+            // Real-time validation
+            form.addEventListener('input', function(event) {
+                validateField(event.target);
+            });
+
+            // Password confirmation validation
+            confirmPasswordInput.addEventListener('input', function() {
+                validatePasswordMatch();
+            });
+
+            passwordInput.addEventListener('input', function() {
+                if (confirmPasswordInput.value) {
+                    validatePasswordMatch();
+                }
+            });
+
+            // Form submission
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                
+                if (validateForm()) {
+                    submitForm();
+                }
+            });
+
+            function validateField(field) {
+                const isValid = field.checkValidity();
+                
+                if (isValid) {
+                    field.classList.remove('is-invalid');
+                    field.classList.add('is-valid');
+                } else {
+                    field.classList.remove('is-valid');
+                    field.classList.add('is-invalid');
+                }
+
+                return isValid;
+            }
+
+            function validatePasswordMatch() {
+                const password = passwordInput.value;
+                const confirmPassword = confirmPasswordInput.value;
+                
+                if (confirmPassword && password !== confirmPassword) {
+                    confirmPasswordInput.classList.add('is-invalid');
+                    confirmPasswordInput.classList.remove('is-valid');
+                    return false;
+                } else if (confirmPassword) {
+                    confirmPasswordInput.classList.remove('is-invalid');
+                    confirmPasswordInput.classList.add('is-valid');
+                    return true;
+                }
+                return true;
+            }
+
+            function validateForm() {
+                let isValid = true;
+                const fields = form.querySelectorAll('input[required], textarea[required]');
+                
+                fields.forEach(field => {
+                    if (!validateField(field)) {
+                        isValid = false;
+                    }
+                });
+
+                if (!validatePasswordMatch()) {
+                    isValid = false;
+                }
+
+                return isValid;
+            }
+
+            async function submitForm() {
+                // Show loading state
+                submitBtn.classList.add('btn-loading');
+                submitBtn.disabled = true;
+
+                try {
+                    const formData = {
+                        fullName: document.getElementById('fullName').value,
+                        email: document.getElementById('email').value,
+                        phone: document.getElementById('phone').value,
+                        password: document.getElementById('password').value,
+                        address: document.getElementById('address').value,
+                        usertype: '3'
+                    };
+
+                    const response = await fetch('/api/auth/signup', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(formData)
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        alert('Account created successfully! You can now login.');
+                        window.location.href = 'login.html';
+                    } else {
+                        if (data.errors && data.errors.length > 0) {
+                            alert('Registration failed:\n' + data.errors.join('\n'));
+                        } else {
+                            alert(data.message || 'Registration failed');
+                        }
+                    }
+                } catch (error) {
+                    console.error('Signup error:', error);
+                    alert('Registration failed. Please try again.');
+                } finally {
+                    submitBtn.classList.remove('btn-loading');
+                    submitBtn.disabled = false;
+                }
+            }
+
+            // Phone number formatting
+            const phoneInput = document.getElementById('phone');
+            phoneInput.addEventListener('input', function(e) {
+                // Remove all non-numeric characters
+                let value = e.target.value.replace(/\D/g, '');
+                
+                // Limit to 15 digits
+                if (value.length > 15) {
+                    value = value.slice(0, 15);
+                }
+                
+                e.target.value = value;
+            });
+
+            // Add smooth focus transitions
+            const inputs = form.querySelectorAll('.form-control');
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.parentElement.style.transform = 'translateY(-2px)';
+                });
+                
+                input.addEventListener('blur', function() {
+                    this.parentElement.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

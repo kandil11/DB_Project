@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>الصفحة الرئيسية للصيدلية</title>
+  <style>
+    :root {
+      --color1: #B3D7E0;
+      --color2: #7FB3C1;
+      --color3: #4A9BBE;
+      --color4: #2A7A9D;
+      --color5: #1A4D6D;
+      --color1-light: #CEE7EF;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Arial', sans-serif;
+    }
+
+    body {
+      background-color: var(--color1-light);
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .navbar {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      background-color: var(--color5);
+      color: #fff;
+      padding: 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .navbar-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      max-width: 1200px;
+      width: 100%;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: white;
+      text-decoration: none;
+      order: 1;
+    }
+
+    /* Hamburger menu for mobile */
+    .mobile-menu-toggle {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      padding: 0.5rem;
+      order: 0;
+    }
+
+    .hamburger-line {
+      width: 25px;
+      height: 3px;
+      background-color: white;
+      margin: 2px 0;
+      transition: 0.3s;
+    }
+
+    .mobile-menu-toggle.active .hamburger-line:nth-child(1) {
+      transform: rotate(-45deg) translate(-5px, 6px);
+    }
+
+    .mobile-menu-toggle.active .hamburger-line:nth-child(2) {
+      opacity: 0;
+    }
+
+    .mobile-menu-toggle.active .hamburger-line:nth-child(3) {
+      transform: rotate(45deg) translate(-5px, -6px);
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+      order: 2;
+    }
+
+    .nav-menu a {
+      color: white;
+      text-decoration: none;
+      transition: color 0.3s;
+      font-weight: 500;
+      padding: 0.5rem;
+    }
+
+    .nav-menu a:hover {
+      color: var(--color1);
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      order: 3;
+    }
+
+    .language-selector {
+      order: 1;
+    }
+
+    #lang-select {
+      padding: 0.5rem;
+      font-size: 0.9rem;
+      border-radius: 4px;
+      border: 1px solid white;
+      background-color: transparent;
+      color: white;
+    }
+
+    .cart-icon {
+      color: white;
+      font-size: 1.3rem;
+      text-decoration: none;
+      position: relative;
+      padding: 0.5rem;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      order: 2;
+    }
+
+    .cart-badge {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background-color: #e74c3c;
+      color: white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 0.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .auth-buttons {
+      display: flex;
+      gap: 0.5rem;
+      position: relative;
+      order: 3;
+    }
+
+    .auth-buttons button {
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+      min-height: 44px;
+    }
+
+    .signup-btn {
+      background-color: white;
+      color: var(--color4);
+    }
+
+    .login-btn {
+      background-color: transparent;
+      color: white;
+      border: 1px solid white;
+    }
+
+    .signup-btn:hover {
+      background-color: var(--color1-light);
+    }
+
+    .login-btn:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      background-color: white;
+      min-width: 180px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      z-index: 1001;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .dropdown-content a {
+      color: var(--color5);
+      padding: 14px 18px;
+      text-decoration: none;
+      display: block;
+      transition: background-color 0.3s;
+      font-size: 0.9rem;
+    }
+
+    .dropdown-content a:hover {
+      background-color: var(--color1);
+    }
+
+    .show {
+      display: block;
+    }
+
+    .hero {
+      background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1587370560942-ad2a04eabb5f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+      height: 70vh;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      text-align: center;
+      padding: 0 2rem;
+    }
+
+    .hero-content h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero-content p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .hero-btn {
+      display: inline-block;
+      background-color: var(--color4);
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .hero-btn:hover {
+      background-color: var(--color5);
+    }
+
+    .services {
+      padding: 4rem 2rem;
+      background-color: white;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-title h2 {
+      font-size: 2.5rem;
+      color: var(--color4);
+      margin-bottom: 1rem;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .service-card {
+      background-color: var(--color1-light);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .service-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .service-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .service-content {
+      padding: 1.5rem;
+    }
+
+    .service-content h3 {
+      margin-bottom: 1rem;
+      color: var(--color3);
+    }
+
+    footer {
+      background-color: var(--color5);
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-section h3 {
+      margin-bottom: 1rem;
+      color: var(--color1);
+      font-size: 1.2rem;
+    }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-links a {
+      color: #ccc;
+      text-decoration: none;
+      transition: color 0.3s;
+      font-size: 0.95rem;
+    }
+
+    .footer-links a:hover {
+      color: white;
+    }
+       .cart-icon {
+            color: white;
+            font-size: 1.5rem;
+            text-decoration: none;
+            position: relative;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+    /* Tablet styles */
+    @media (min-width: 768px) {
+      .navbar {
+        padding: 1rem 2rem;
+      }
+
+      .logo {
+        font-size: 1.8rem;
+      }
+
+      .navbar-content {
+        gap: 3rem;
+      }
+
+      .hero-content h1 {
+        font-size: 2.5rem;
+      }
+
+      .hero-content p {
+        font-size: 1.2rem;
+      }
+
+      .services {
+        padding: 4rem 2rem;
+      }
+
+      .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+      }
+
+      .footer-content {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* Desktop styles */
+    @media (min-width: 1024px) {
+      .hero {
+        min-height: 70vh;
+      }
+
+      .hero-content h1 {
+        font-size: 3rem;
+      }
+
+      .services-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .footer-content {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    /* Mobile menu styles */
+    @media (max-width: 767px) {
+      .mobile-menu-toggle {
+        display: flex;
+      }
+
+      .navbar-content {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .nav-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: var(--color5);
+        flex-direction: column;
+        gap: 0;
+        transform: translateY(-100%);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        order: 4;
+      }
+
+      .nav-menu.active {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .nav-menu a {
+        padding: 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        font-size: 1rem;
+      }
+
+      .nav-actions {
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .auth-buttons {
+        gap: 0.5rem;
+      }
+
+      .auth-buttons button {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+      }
+
+      .dropdown-content {
+        position: fixed;
+        top: auto;
+        right: 1rem;
+        left: 1rem;
+        width: auto;
+        max-width: none;
+      }
+
+      .hero {
+        min-height: 50vh;
+      }
+
+      .hero-content {
+        padding: 0 1rem;
+      }
+
+      .service-card img {
+        height: 180px;
+      }
+    }
+
+    /* Extra small devices */
+    @media (max-width: 480px) {
+      .navbar {
+        padding: 0.8rem;
+      }
+
+      .logo {
+        font-size: 1.3rem;
+      }
+
+      .navbar-content {
+        gap: 0.5rem;
+      }
+
+      .nav-actions {
+        gap: 0.25rem;
+      }
+
+      .auth-buttons button {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.75rem;
+      }
+
+      .hero-content h1 {
+        font-size: 1.8rem;
+      }
+
+      .hero-content p {
+        font-size: 1rem;
+      }
+
+      .hero-btn {
+        padding: 0.8rem 1.5rem;
+        font-size: 0.9rem;
+      }
+
+      .services {
+        padding: 2rem 0.5rem;
+      }
+
+      .section-title h2 {
+        font-size: 1.8rem;
+      }
+
+      .service-content {
+        padding: 1rem;
+      }
+
+      .service-content h3 {
+        font-size: 1.2rem;
+      }
+
+      .service-content p {
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-content">
+      <a href="Home arabic.html" class="logo">د. فاطمة</a>
+      
+      <div class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+        <div class="hamburger-line"></div>
+        <div class="hamburger-line"></div>
+        <div class="hamburger-line"></div>
+      </div>
+
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="products.html">المنتجات</a></li>
+        <li><a href="#footer">من نحن</a></li>
+        <li><a href="#footer">اتصل بنا</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <div class="language-selector">
+         <select id="lang-select" onchange="switchLang()">
+            <option value="en">English</option>
+            <option value="ar" selected>العربية</option>
+         </select>
+        </div>
+        <a href="shopping-cart.html" class="cart-icon">🛒 </a>
+
+        <div class="auth-buttons" id="authButtons">
+          <button class="login-btn" onclick="window.location.href='login.html'">تسجيل الدخول</button>
+          <button class="signup-btn" onclick="toggleDropdown()">إنشاء حساب</button>
+          <div id="signupDropdown" class="dropdown-content">
+            <a href="admin-signup.html">مسؤول</a>
+            <a href="pharmacist-signup.html">صيدلي</a>
+            <a href="customer-signup.html">زبون</a>
+            <a href="supplier-signup.html">مورد</a>
+            <a href="deliverer-signup.html">موصل</a>
+          </div>
+        </div>
+        <div class="auth-buttons" id="userMenu" style="display: none;">
+          <button class="signup-btn" onclick="toggleUserDropdown()">
+            <span id="userName">المستخدم</span> ▼
+          </button>
+          <div id="userDropdown" class="dropdown-content">
+            <a href="products.html">🛍️ المنتجات</a>
+            <a href="shopping-cart.html">🛒 السلة</a>
+            <a href="#" onclick="logout()">🚪 تسجيل الخروج</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h1>صحتك أولويتنا</h1>
+      <p>احصل على منتجات موثوقة من صيدليتنا الموثوقة</p>
+      <a href="#services" class="hero-btn">استكشف منتجاتنا</a>
+    </div>
+  </section>
+
+  <section id="services" class="services">
+    <div class="section-title">
+      <h2>منتجاتنا</h2>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <a href="products.html">
+        <img src="skin care.jpg" alt="العناية بالبشرة" />
+        </a>
+        <div class="service-content">
+          <h3>العناية بالبشرة</h3>
+          <p>مجموعة واسعة من منتجات العناية بالبشرة لجميع أنواع ومشاكل البشرة. تجد كل شيء من الأساسيات اليومية مثل المنظفات والمرطبات إلى العلاجات المستهدفة مثل السيرومات والحماية من الشمس، كلها من علامات تجارية موثوقة لمساعدتك على تحقيق بشرة صحية ومشرقة.</p>
+        </div>
+      </div>
+      <div class="service-card">
+        <a href="products.html">
+        <img src="hair care.jpg" alt="العناية بالشعر" />
+        </a>
+        <div class="service-content">
+          <h3>العناية بالشعر</h3>
+          <p>غذِّ شعرك مع مجموعتنا الواسعة من منتجات العناية بالشعر. نقدم حلولًا لكل نوع شعر ومشكلة، من الشامبو والبلسم إلى العلاجات والزيوت ومنتجات التصفيف، كلها من علامات تجارية رائدة. اعثر على الحل المثالي لمكافحة الجفاف، والتجعد، وتساقط الشعر، وأكثر، لتحقيق شعر جميل وصحي.</p>
+        </div>
+      </div>
+      <div class="service-card">
+        <a href="products.html">
+        <img src="medicine.jpg" alt="الأدوية" />
+        </a>
+        <div class="service-content">
+          <h3>الأدوية</h3>
+          <p>تقدم صيدليتنا مجموعة شاملة من الأدوية الموصوفة والأدوية التي تُصرف دون وصفة من شركات تصنيع موثوقة. يوفر صيادلتنا المرخصون نصائح خبيرة لكل شيء من مسكنات الألم إلى إدارة الأمراض المزمنة. صحتك هي أولويتنا؛ اعتمد علينا للحصول على أدوية أصلية ورعاية مهنية.</p>
+        </div>
+      </div>
+      <div class="service-card">
+       <a href="products.html">
+        <img src="baby care.jpg" alt="العناية بالطفل" />
+        </a>
+        <div class="service-content">
+          <h3>العناية بالطفل</h3>
+          <p>نقدم مجموعة مختارة بعناية من منتجات العناية بالطفل لضمان راحة ورفاهية صغيرك. تشمل مجموعتنا الأساسيات اللطيفة، والمنتجات منخفضة الحساسية، والمختبرة من قبل أطباء الجلد، كلها من علامات تجارية موثوقة، حتى تتمكن من العناية بثقة باحتياجات طفلك الحساسة.</p>
+        </div>
+      </div>
+      <div class="service-card">
+        <a href="products.html">
+        <img src="oral care.jpg" alt="العناية بالفم" />
+        </a>
+        <div class="service-content">
+          <h3>العناية بالفم</h3>
+          <p>احصل على ابتسامة صحية وواثقة مع منتجات العناية بالفم الخاصة بنا. تشمل تشكيلتنا فرش الأسنان، معاجين الأسنان، غسولات الفم، وخيوط الأسنان من علامات تجارية موثوقة، تعالج كل شيء من حماية الأسنان والحساسية إلى تبييض الأسنان وصحة اللثة. يمكن لصيادلتنا مساعدتك في إيجاد روتين العناية بالفم المثالي.</p>
+        </div>
+      </div>
+      <div class="service-card">
+        <a href="products.html">
+        <img src="health devices.jpg" alt="أجهزة صحية" />
+        </a>
+        <div class="service-content">
+          <h3>الأجهزة الصحية</h3>
+          <p>تتميز مجموعتنا المختارة بعناية بأجهزة عالية الجودة وسهلة الاستخدام من علامات تجارية دولية ومحلية محترمة، مصممة لتوفير قراءات دقيقة وراحة البال. سواء كنت تتابع حالة مزمنة، أو تجري فحوصات روتينية، أو تحتاج إلى تشخيص سريع في المنزل، ستجد أجهزة موثوقة تمكّنك من المشاركة بنشاط في رحلة صحتك.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 د.بيشوي. جميع الحقوق محفوظة.</p>
+  </footer>
+  <footer>
+    <div class="footer-content">
+      <div  id="footer" class="footer-section">
+        <h3>د.بيشوي</h3>
+        <h4>من نحن</h4>
+        <p>شريكك الموثوق في الرعاية الصحية لجميع احتياجاتك الصيدلانية.</p>
+        <p> <b>العنوان: </b> أونلاين</p>
+        <h4>اتصل بنا</h4>
+        <p><b>رقم الهاتف: </b>01277022106</p>
+        <p><b>الهاتف الأرضي: </b>33924700</p>
+      </div>
+      
+      <div class="footer-section">
+        <h3>روابط سريعة</h3>
+        <ul class="footer-links">
+          <li><a href="products.html">المنتجات</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h3>الفئات</h3>
+        <ul class="footer-links">
+          <li><a href="#">الأدوية</a></li>
+          <li><a href="#">العناية بالبشرة</a></li>
+          <li><a href="#">العناية بالشعر</a></li>
+          <li><a href="#">العناية بالطفل</a></li>
+          <li><a href="#">العناية الشخصية</a></li>
+        </ul>  
+     </div>  
+    </div>
+  </footer>
+
+  <script>
+    function toggleDropdown() {
+      document.getElementById("signupDropdown").classList.toggle("show");
+    }
+
+    function toggleMobileMenu() {
+      const navMenu = document.getElementById("navMenu");
+      const toggle = document.querySelector(".mobile-menu-toggle");
+      
+      navMenu.classList.toggle("active");
+      toggle.classList.toggle("active");
+    }
+    
+    function toggleUserDropdown() {
+      document.getElementById("userDropdown").classList.toggle("show");
+    }
+    
+    function logout() {
+      localStorage.removeItem('userToken');
+      localStorage.removeItem('userData');
+      window.location.href = 'Home arabic.html';
+    }
+    
+    // Check login status
+    function checkLoginStatus() {
+      const token = localStorage.getItem('userToken');
+      const userData = JSON.parse(localStorage.getItem('userData') || 'null');
+      
+      if (token && userData) {
+        document.getElementById('authButtons').style.display = 'none';
+        document.getElementById('userMenu').style.display = 'flex';
+        document.getElementById('userName').textContent = userData.name || 'المستخدم';
+      }
+    }
+    
+    checkLoginStatus();
+
+    window.onclick = function(event) {
+      if (!event.target.matches('.signup-btn') && !event.target.closest('.dropdown-content')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        for (var i = 0; i < dropdowns.length; i++) {
+          var openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains('show')) {
+            openDropdown.classList.remove('show');
+          }
+        }
+      }
+      
+      // Close mobile menu when clicking outside
+      if (!event.target.closest('.navbar-content') && !event.target.closest('.mobile-menu-toggle')) {
+        const navMenu = document.getElementById("navMenu");
+        const toggle = document.querySelector(".mobile-menu-toggle");
+        navMenu.classList.remove("active");
+        toggle.classList.remove("active");
+      }
+      
+      // Close user dropdown when clicking outside
+      if (!event.target.closest('#userMenu')) {
+        const userDropdown = document.getElementById('userDropdown');
+        if (userDropdown) userDropdown.classList.remove('show');
+      }
+    };
+
+    function switchLang() {
+      const lang = document.getElementById('lang-select').value;
+      if (lang === 'en') {
+        window.location.href = 'Home.html';
+      }
+    }
+
+    // Close mobile menu when clicking on nav links
+    document.querySelectorAll('.nav-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        const navMenu = document.getElementById("navMenu");
+        const toggle = document.querySelector(".mobile-menu-toggle");
+        navMenu.classList.remove("active");
+        toggle.classList.remove("active");
+      });
+    });
+  </script>
+</body>
+</html>
