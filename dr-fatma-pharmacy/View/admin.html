@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard - Dr.Fatma Pharmacy</title>
+  <style>
+    :root {
+      --primary-blue: #0066CC;
+      --secondary-blue: #004A99;
+      --light-blue: #E6F2FF;
+      --accent-green: #00A651;
+      --accent-red: #DC143C;
+      --neutral-gray: #6C757D;
+      --light-gray: #F8F9FA;
+      --white: #FFFFFF;
+      --border-gray: #DEE2E6;
+      --dark-text: #212529;
+      --bg: #0b1020;
+      --panel: #111735;
+      --panel-2: #0e1430;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+    body { background: linear-gradient(180deg, var(--panel-2), var(--bg)); color: #e7ebff; min-height: 100vh; }
+    .layout { display: grid; grid-template-columns: 260px 1fr; }
+    .sidebar { background: linear-gradient(180deg, #0f1742, #0b1133); min-height: 100vh; padding: 1rem; border-right: 1px solid rgba(255,255,255,0.06); position: sticky; top: 0; }
+    .brand { display: flex; align-items: center; gap: .75rem; padding: .75rem; border-radius: 10px; background: linear-gradient(135deg, rgba(0,102,204,.15), rgba(0,166,81,.15)); margin-bottom: 1rem; }
+    .brand-icon { width: 36px; height: 36px; border-radius: 8px; background: linear-gradient(135deg, var(--primary-blue), var(--accent-green)); display:flex; align-items:center; justify-content:center; font-weight:700; }
+    .brand-name { font-weight: 700; }
+    .nav { display: grid; gap: .25rem; margin-top: .5rem; }
+    .nav button { text-align: left; width: 100%; background: transparent; color: #c9d3ff; border: 1px solid transparent; padding: .75rem .9rem; border-radius: 8px; cursor: pointer; transition: .2s; font-weight: 600; }
+    .nav button:hover, .nav button.active { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.08); color: #fff; }
+    .header { display:flex; justify-content: space-between; align-items:center; padding: 1rem 1.25rem; border-bottom: 1px solid rgba(255,255,255,0.06); position: sticky; top: 0; backdrop-filter: blur(6px); background: linear-gradient(180deg, rgba(11,16,32,.9), rgba(11,16,32,.75)); z-index: 10; }
+    .header h1 { font-size: 1.25rem; color: #fff; }
+    .main { padding: 1rem; }
+    .grid { display: grid; gap: 1rem; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
+    .card { background: linear-gradient(180deg, var(--panel), var(--panel-2)); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 1rem; }
+    .card h3 { margin-bottom: .5rem; color: #fff; }
+    .table-wrap { overflow: auto; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06); }
+    table { width: 100%; border-collapse: collapse; background: linear-gradient(180deg, var(--panel), var(--panel-2)); color: #e7ebff; }
+    th, td { padding: .75rem; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    th { text-align: left; color: #c9d3ff; font-weight: 700; position: sticky; top: 0; background: #0f1746; }
+    .toolbar { display:flex; gap:.5rem; flex-wrap: wrap; margin-bottom: .75rem; align-items:center; }
+    input, select { background: #0f1746; color: #e7ebff; border: 1px solid rgba(255,255,255,0.12); padding: .6rem .7rem; border-radius: 8px; }
+    .btn { background: var(--primary-blue); color: white; border: none; padding: .6rem .9rem; border-radius: 8px; cursor: pointer; font-weight: 700; }
+    .btn.secondary { background: transparent; border: 1px solid rgba(255,255,255,0.2); }
+    .btn.danger { background: var(--accent-red); }
+    .form-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap:.5rem; }
+    .hidden { display: none; }
+    .badge { padding: .15rem .5rem; border-radius: 999px; background: rgba(0,166,81,.15); color: #69e3a5; font-weight:700; }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <a href="Home.html" class="brand" style="text-decoration:none;color:inherit;">
+        <div class="brand-icon">+</div>
+        <div>
+          <div class="brand-name">Dr. Fatma</div>
+          <div style="font-size:.8rem;color:#9fb2ff">Admin Console</div>
+        </div>
+      </a>
+      <div class="nav">
+        <button class="active" data-tab="overview">Overview</button>
+        <button data-tab="products">Products</button>
+        <button data-tab="users">Users</button>
+        <button data-tab="orders">Orders</button>
+      </div>
+    </aside>
+    <div>
+      <header class="header">
+        <h1 id="sectionTitle">Overview</h1>
+        <div>
+          <span id="adminName" class="badge">Admin</span>
+          <button class="btn secondary" id="logoutBtn">Logout</button>
+        </div>
+      </header>
+      <main class="main">
+        <section id="tab-overview" class="grid">
+          <div class="cards">
+            <div class="card"><h3>Total Products</h3><div id="statProducts">-</div></div>
+            <div class="card"><h3>Total Users</h3><div id="statUsers">-</div></div>
+            <div class="card"><h3>Pending Orders</h3><div id="statOrders">-</div></div>
+            <div class="card" style="border-color: rgba(220,20,60,.3);">
+              <h3 style="color: #ff6b6b;">Pending Approvals</h3>
+              <div id="statPendingApprovals">-</div>
+            </div>
+          </div>
+        </section>
+
+        <section id="tab-products" class="grid hidden">
+          <div class="card">
+            <div class="toolbar">
+              <input id="productSearch" placeholder="Search products" />
+              <select id="productCategory">
+                <option value="all">All categories</option>
+                <option value="prescription">Prescription</option>
+                <option value="otc">OTC</option>
+                <option value="vitamins">Vitamins</option>
+                <option value="wellness">Wellness</option>
+                <option value="beauty">Beauty</option>
+                <option value="baby">Baby</option>
+              </select>
+              <button class="btn" id="newProductBtn">New product</button>
+            </div>
+            <div id="productForm" class="form-grid hidden">
+              <input id="p_name" placeholder="Name" />
+              <input id="p_price" type="number" step="0.01" placeholder="Price" />
+              <input id="p_category" placeholder="Category" />
+              <input id="p_stock" type="number" placeholder="Stock" />
+              <input id="p_image" placeholder="Image URL" />
+              <input id="p_rx" type="checkbox" /> Requires Rx
+              <input id="p_desc" placeholder="Description" />
+              <button class="btn" id="saveProductBtn">Save</button>
+              <button class="btn secondary" id="cancelProductBtn">Cancel</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th>Rx</th><th></th>
+                  </tr>
+                </thead>
+                <tbody id="productsTbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section id="tab-users" class="grid hidden">
+          <div class="card">
+            <div class="toolbar">
+              <select id="userRoleFilter">
+                <option value="">All roles</option>
+                <option value="1">Admin</option>
+                <option value="2">Pharmacist</option>
+                <option value="3">Customer</option>
+                <option value="4">Supplier</option>
+                <option value="5">Deliverer</option>
+              </select>
+              <button class="btn" id="newUserBtn">New user</button>
+            </div>
+            <div id="userForm" class="form-grid hidden">
+              <input id="u_name" placeholder="Full name" />
+              <input id="u_email" placeholder="Email" />
+              <input id="u_phone" placeholder="Phone" />
+              <input id="u_address" placeholder="Address" />
+              <select id="u_role">
+                <option value="1">Admin</option>
+                <option value="2">Pharmacist</option>
+                <option value="3">Customer</option>
+                <option value="4">Supplier</option>
+                <option value="5">Deliverer</option>
+              </select>
+              <input id="u_password" placeholder="Password" />
+              <button class="btn" id="saveUserBtn">Save</button>
+              <button class="btn secondary" id="cancelUserBtn">Cancel</button>
+            </div>
+            <div class="toolbar" style="margin-top: 1rem;">
+              <select id="userApprovalFilter">
+                <option value="">All status</option>
+                <option value="pending">Pending Approval</option>
+                <option value="approved">Approved</option>
+              </select>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Role</th><th>Status</th><th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="usersTbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section id="tab-orders" class="grid hidden">
+          <div class="card">
+            <div class="toolbar">
+              <span>Orders management (coming soon)</span>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    const token = localStorage.getItem('userToken');
+    const userData = JSON.parse(localStorage.getItem('userData') || 'null');
+    
+    // Check admin access
+    if (!token || !userData || userData.userType !== 1) {
+      alert('Access denied. Admin login required.');
+      window.location.href = 'login.html';
+    }
+    
+    document.getElementById('adminName').textContent = userData?.name || 'Admin';
+    document.getElementById('logoutBtn').onclick = () => {
+      localStorage.removeItem('userToken');
+      localStorage.removeItem('userData');
+      window.location.href = 'Home.html';
+    };
+
+    // Helper for authenticated API calls
+    async function authFetch(url, options = {}) {
+      const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+        ...options.headers
+      };
+      return fetch(url, { ...options, headers });
+    }
+
+    // Tab switching
+    document.querySelectorAll('.nav button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const tab = btn.getAttribute('data-tab');
+        document.getElementById('sectionTitle').textContent = btn.textContent;
+        document.querySelectorAll('section[id^="tab-"]').forEach(s => s.classList.add('hidden'));
+        document.getElementById('tab-' + tab).classList.remove('hidden');
+        if (tab === 'products') loadProducts();
+        if (tab === 'users') loadUsers();
+        if (tab === 'orders') loadOrders();
+        if (tab === 'overview') refreshOverview();
+      });
+    });
+
+    // Overview stats from API
+    async function refreshOverview() {
+      try {
+        const [productsRes, usersRes, ordersRes] = await Promise.all([
+          fetch('/api/products'),
+          authFetch('/api/users'),
+          authFetch('/api/orders/all')
+        ]);
+        
+        const products = await productsRes.json();
+        const users = await usersRes.json();
+        const orders = await ordersRes.json();
+        
+        const pendingApprovals = users.data?.filter(u => !u.isApproved).length || 0;
+        
+        document.getElementById('statProducts').textContent = products.data?.length || 0;
+        document.getElementById('statUsers').textContent = users.data?.length || 0;
+        document.getElementById('statOrders').textContent = orders.data?.filter(o => o.status === 'pending').length || 0;
+        document.getElementById('statPendingApprovals').textContent = pendingApprovals;
+        
+        // Highlight if there are pending approvals
+        if (pendingApprovals > 0) {
+          document.getElementById('statPendingApprovals').innerHTML = `<span style="color:#ff6b6b;font-weight:bold;">${pendingApprovals}</span>`;
+        }
+      } catch (error) {
+        console.error('Error loading stats:', error);
+      }
+    }
+    refreshOverview();
+
+    // ============ PRODUCTS MANAGEMENT ============
+    const productsTbody = document.getElementById('productsTbody');
+    const productForm = document.getElementById('productForm');
+    let editingProductId = null;
+
+    document.getElementById('newProductBtn').onclick = () => {
+      editingProductId = null;
+      clearProductForm();
+      productForm.classList.toggle('hidden');
+    };
+    document.getElementById('cancelProductBtn').onclick = () => {
+      productForm.classList.add('hidden');
+      clearProductForm();
+    };
+
+    function clearProductForm() {
+      document.getElementById('p_name').value = '';
+      document.getElementById('p_price').value = '';
+      document.getElementById('p_category').value = '';
+      document.getElementById('p_stock').value = '';
+      document.getElementById('p_image').value = '';
+      document.getElementById('p_rx').checked = false;
+      document.getElementById('p_desc').value = '';
+    }
+
+    document.getElementById('saveProductBtn').onclick = async () => {
+      const productData = {
+        name: document.getElementById('p_name').value,
+        price: document.getElementById('p_price').value,
+        category: document.getElementById('p_category').value || 'otc',
+        stock_quantity: document.getElementById('p_stock').value || 100,
+        image_url: document.getElementById('p_image').value,
+        requires_prescription: document.getElementById('p_rx').checked,
+        description: document.getElementById('p_desc').value,
+      };
+      
+      if (!productData.name || !productData.price) {
+        alert('Name and price are required');
+        return;
+      }
+      
+      try {
+        let response;
+        if (editingProductId) {
+          response = await authFetch('/api/products/' + editingProductId, {
+            method: 'PUT',
+            body: JSON.stringify(productData)
+          });
+        } else {
+          response = await authFetch('/api/products', {
+            method: 'POST',
+            body: JSON.stringify(productData)
+          });
+        }
+        
+        const data = await response.json();
+        if (data.success) {
+          alert(editingProductId ? 'Product updated!' : 'Product added!');
+          productForm.classList.add('hidden');
+          clearProductForm();
+          editingProductId = null;
+          loadProducts();
+        } else {
+          alert(data.message || 'Failed to save product');
+        }
+      } catch (error) {
+        console.error('Save product error:', error);
+        alert('Failed to save product');
+      }
+    };
+    
+    async function loadProducts() {
+      const search = document.getElementById('productSearch').value || '';
+      const category = document.getElementById('productCategory').value || 'all';
+      
+      productsTbody.innerHTML = '<tr><td colspan="7">Loading...</td></tr>';
+      
+      try {
+        let url = '/api/products';
+        const params = new URLSearchParams();
+        if (search) params.set('search', search);
+        if (category && category !== 'all') params.set('category', category);
+        if (params.toString()) url += '?' + params.toString();
+        
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        productsTbody.innerHTML = '';
+        
+        if (!data.data || data.data.length === 0) {
+          productsTbody.innerHTML = '<tr><td colspan="7">No products found. Click "New product" to add one.</td></tr>';
+          return;
+        }
+        
+        data.data.forEach(p => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${p._id.slice(-6)}</td>
+            <td>${p.name}</td>
+            <td>${p.category || ''}</td>
+            <td>$${p.price}</td>
+            <td>${p.stock_quantity}</td>
+            <td>${p.requires_prescription ? 'Yes' : 'No'}</td>
+            <td>
+              <button class='btn secondary' data-edit='${p._id}'>Edit</button>
+              <button class='btn danger' data-del='${p._id}'>Delete</button>
+            </td>`;
+          productsTbody.appendChild(tr);
+        });
+      } catch (error) {
+        console.error('Load products error:', error);
+        productsTbody.innerHTML = '<tr><td colspan="7">Failed to load products</td></tr>';
+      }
+    }
+
+    document.getElementById('productSearch').oninput = () => loadProducts();
+    document.getElementById('productCategory').onchange = () => loadProducts();
+
+    productsTbody.addEventListener('click', async (e) => {
+      const delId = e.target.getAttribute('data-del');
+      const editId = e.target.getAttribute('data-edit');
+      
+      if (delId && confirm('Delete this product?')) {
+        try {
+          const response = await authFetch('/api/products/' + delId, { method: 'DELETE' });
+          const data = await response.json();
+          if (data.success) {
+            alert('Product deleted!');
+            loadProducts();
+          } else {
+            alert(data.message || 'Failed to delete');
+          }
+        } catch (error) {
+          alert('Failed to delete product');
+        }
+      }
+      
+      if (editId) {
+        try {
+          const response = await fetch('/api/products/' + editId);
+          const data = await response.json();
+          if (data.success) {
+            const p = data.data;
+            editingProductId = p._id;
+            document.getElementById('p_name').value = p.name || '';
+            document.getElementById('p_price').value = p.price || '';
+            document.getElementById('p_category').value = p.category || '';
+            document.getElementById('p_stock').value = p.stock_quantity || '';
+            document.getElementById('p_image').value = p.image_url || '';
+            document.getElementById('p_rx').checked = p.requires_prescription || false;
+            document.getElementById('p_desc').value = p.description || '';
+            productForm.classList.remove('hidden');
+          }
+        } catch (error) {
+          alert('Failed to load product');
+        }
+      }
+    });
+
+    // ============ USERS MANAGEMENT ============
+    const roleNames = { 1: 'Admin', 2: 'Pharmacist', 3: 'Customer', 4: 'Supplier', 5: 'Deliverer' };
+    const usersTbody = document.getElementById('usersTbody');
+    const userForm = document.getElementById('userForm');
+
+    document.getElementById('newUserBtn').onclick = () => userForm.classList.toggle('hidden');
+    document.getElementById('cancelUserBtn').onclick = () => userForm.classList.add('hidden');
+
+    document.getElementById('saveUserBtn').onclick = async () => {
+      const userData = {
+        fullName: document.getElementById('u_name').value,
+        email: document.getElementById('u_email').value,
+        phone: document.getElementById('u_phone').value,
+        address: document.getElementById('u_address').value,
+        usertype: document.getElementById('u_role').value,
+        password: document.getElementById('u_password').value,
+      };
+      
+      if (!userData.fullName || !userData.phone || !userData.password) {
+        alert('Name, phone, and password are required');
+        return;
+      }
+      
+      try {
+        const response = await fetch('/api/auth/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(userData)
+        });
+        const data = await response.json();
+        if (data.success) {
+          alert('User created!');
+          userForm.classList.add('hidden');
+          loadUsers();
+        } else {
+          alert(data.message || 'Failed to create user');
+        }
+      } catch (error) {
+        alert('Failed to create user');
+      }
+    };
+
+    document.getElementById('userRoleFilter').onchange = () => loadUsers();
+    document.getElementById('userApprovalFilter').onchange = () => loadUsers();
+    
+    async function loadUsers() {
+      const role = document.getElementById('userRoleFilter').value;
+      const approvalFilter = document.getElementById('userApprovalFilter').value;
+      usersTbody.innerHTML = '<tr><td colspan="7">Loading...</td></tr>';
+      
+      try {
+        let url = '/api/users';
+        if (role) url += '?role=' + role;
+        
+        const response = await authFetch(url);
+        const data = await response.json();
+        
+        usersTbody.innerHTML = '';
+        
+        if (!data.data || data.data.length === 0) {
+          usersTbody.innerHTML = '<tr><td colspan="7">No users found</td></tr>';
+          return;
+        }
+        
+        // Filter by approval status if selected
+        let users = data.data;
+        if (approvalFilter === 'pending') {
+          users = users.filter(u => !u.isApproved);
+        } else if (approvalFilter === 'approved') {
+          users = users.filter(u => u.isApproved);
+        }
+        
+        if (users.length === 0) {
+          usersTbody.innerHTML = '<tr><td colspan="7">No users found</td></tr>';
+          return;
+        }
+        
+        users.forEach(u => {
+          const tr = document.createElement('tr');
+          const statusBadge = u.isApproved 
+            ? '<span class="badge" style="background:rgba(0,166,81,.15);color:#69e3a5;">Approved</span>'
+            : '<span class="badge" style="background:rgba(220,20,60,.15);color:#ff6b6b;">Pending</span>';
+          const approveBtn = u.isApproved 
+            ? '' 
+            : `<button class='btn' style='background:var(--accent-green);margin-right:.5rem;' data-approve='${u._id}'>Approve</button>`;
+          tr.innerHTML = `
+            <td>${u._id.slice(-6)}</td>
+            <td>${u.name}</td>
+            <td>${u.email || '-'}</td>
+            <td>${u.phone}</td>
+            <td>${roleNames[u.userType] || u.userType}</td>
+            <td>${statusBadge}</td>
+            <td>
+              ${approveBtn}
+              <button class='btn danger' data-udel='${u._id}'>Delete</button>
+            </td>`;
+          usersTbody.appendChild(tr);
+        });
+      } catch (error) {
+        console.error('Load users error:', error);
+        usersTbody.innerHTML = '<tr><td colspan="7">Failed to load users</td></tr>';
+      }
+    }
+
+    usersTbody.addEventListener('click', async (e) => {
+      const deleteId = e.target.getAttribute('data-udel');
+      const approveId = e.target.getAttribute('data-approve');
+      
+      if (deleteId && confirm('Delete this user?')) {
+        try {
+          const response = await authFetch('/api/users/' + deleteId, { method: 'DELETE' });
+          const data = await response.json();
+          if (data.success) {
+            alert('User deleted!');
+            loadUsers();
+            refreshOverview();
+          } else {
+            alert(data.message || 'Failed to delete');
+          }
+        } catch (error) {
+          alert('Failed to delete user');
+        }
+      }
+      
+      if (approveId) {
+        try {
+          const response = await authFetch('/api/users/' + approveId + '/approve', { method: 'PUT' });
+          const data = await response.json();
+          if (data.success) {
+            alert('User approved successfully!');
+            loadUsers();
+          } else {
+            alert(data.message || 'Failed to approve user');
+          }
+        } catch (error) {
+          alert('Failed to approve user');
+        }
+      }
+    });
+
+    // ============ ORDERS MANAGEMENT ============
+    async function loadOrders() {
+      const ordersSection = document.querySelector('#tab-orders .card');
+      ordersSection.innerHTML = '<div class="toolbar"><span>Loading orders...</span></div>';
+      
+      try {
+        const response = await authFetch('/api/orders/all');
+        const data = await response.json();
+        
+        if (!data.data || data.data.length === 0) {
+          ordersSection.innerHTML = '<div class="toolbar"><span>No orders found</span></div>';
+          return;
+        }
+        
+        let html = `
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Customer</th>
+                  <th>Items</th>
+                  <th>Total</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+        `;
+        
+        data.data.forEach(o => {
+          html += `
+            <tr>
+              <td>${o._id.slice(-6)}</td>
+              <td>${o.user_id?.name || 'Unknown'}</td>
+              <td>${o.items.length} items</td>
+              <td>$${o.total.toFixed(2)}</td>
+              <td><span class="badge">${o.status}</span></td>
+              <td>${new Date(o.createdAt).toLocaleDateString()}</td>
+            </tr>
+          `;
+        });
+        
+        html += '</tbody></table></div>';
+        ordersSection.innerHTML = html;
+      } catch (error) {
+        console.error('Load orders error:', error);
+        ordersSection.innerHTML = '<div class="toolbar"><span>Failed to load orders</span></div>';
+      }
+    }
+  </script>
+</body>
+</html>
+
+

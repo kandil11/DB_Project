@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. Fatma Pharmacy - Admin Signup</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --color1: #B3D7E0;
+            --color2: #7FB3C1;
+            --color3: #4A9BBE;
+            --color4: #2A7A9D;
+            --color5: #1A4D6D;
+            --color1-light: #CEE7EF;
+        }
+
+        body {
+            background-color: var(--color1-light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .signup-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border-top: 5px solid var(--color5);
+        }
+
+        .signup-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .signup-header h2 {
+            color: var(--color5);
+            font-weight: 600;
+        }
+
+        .form-label {
+            color: var(--color4);
+            font-weight: 500;
+        }
+
+        .form-control:focus {
+            border-color: var(--color3);
+            box-shadow: 0 0 0 0.25rem rgba(74, 155, 190, 0.25);
+        }
+
+        .btn-primary {
+            background-color: var(--color5);
+            border-color: var(--color5);
+            padding: 10px 20px;
+            font-weight: 500;
+        }
+
+        .btn-primary:hover,
+        .btn-primary:focus {
+            background-color: var(--color4);
+            border-color: var(--color4);
+        }
+
+        .logo {
+            max-height: 60px;
+            margin-bottom: 15px;
+        }
+
+        .login-link {
+            color: var(--color3);
+            text-decoration: none;
+        }
+
+        .login-link:hover {
+            color: var(--color4);
+            text-decoration: underline;
+        }
+
+        .admin-note {
+            background-color: var(--color1);
+            border-left: 4px solid var(--color5);
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .security-code {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="mb-3">
+            <a href="Home.html" style="color: var(--color3); text-decoration: none;">← Back to Home</a>
+        </div>
+        <div class="signup-container">
+            <div class="signup-header">
+                <h2>Admin Registration</h2>
+                <p class="text-muted">Create administrative account</p>
+            </div>
+
+            <div class="admin-note">
+                <p class="mb-0"><strong>Warning:</strong> This registration form is for authorized administrative personnel only. You will need an authorization code from the system owner.</p>
+            </div>
+
+            <form id="adminSignupForm" onsubmit="handleSignup(event)">
+                <input type="hidden" name="usertype" value="1">
+               <div class="mb-3">
+                    <label for="fullName" class="form-label">Full Name</label>
+                    <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Enter your full name" required>
+                </div>
+
+                
+
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Phone Number</label>
+                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter your phone number" required pattern="[0-9]{10,15}">
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Create a strong password" required pattern=".{8,}">
+                    <div class="form-text" style="color: var(--color3)">Password must be at least 12 characters with uppercase, lowercase, numbers and special characters</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="confirmPassword" class="form-label">Confirm Password</label>
+                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required pattern=".{8,}">
+                </div>
+
+
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="securityCheck" required>
+                    <label class="form-check-label" for="securityCheck">I understand that admin accounts have full system access and I agree to follow security protocols</label>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">Create Admin Account</button>
+                </div>
+
+                <div class="text-center mt-3">
+                    <p>Already have an account? <a href="login.html" class="login-link">Login here</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+
+
+    <script>
+    async function handleSignup(event) {
+        event.preventDefault();
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        if (password !== confirmPassword) {
+            alert('Passwords do not match!');
+            return;
+        }
+
+        try {
+            const formData = {
+                fullName: document.getElementById('fullName').value,
+                phone: document.getElementById('phone').value,
+                password: password,
+                usertype: '1'
+            };
+
+            const response = await fetch('/api/auth/signup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                alert('Admin account created successfully! Your account requires approval.');
+                window.location.href = 'login.html';
+            } else {
+                alert(data.message || 'Registration failed');
+            }
+        } catch (error) {
+            console.error('Signup error:', error);
+            alert('Registration failed. Please try again.');
+        }
+    }
+</script>
+</body>
+</html>

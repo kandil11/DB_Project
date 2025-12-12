@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr.Fatma Pharmacy - Shopping Cart</title>
+    <style>
+        :root {
+            /* Professional Pharmacy Color Scheme */
+            --primary-blue: #0066CC;        /* Medical blue - primary brand */
+            --secondary-blue: #004A99;      /* Darker blue - headers */
+            --light-blue: #E6F2FF;          /* Light blue - backgrounds */
+            --accent-green: #00A651;        /* Health green - success */
+            --accent-red: #DC143C;          /* Alert red - important actions */
+            --neutral-gray: #6C757D;        /* Text gray */
+            --light-gray: #F8F9FA;          /* Background gray */
+            --white: #FFFFFF;               /* Pure white */
+            --border-gray: #DEE2E6;         /* Border color */
+            --dark-text: #212529;           /* Dark text */
+            --orange-accent: #FF6B35;       /* Pharmacy orange accent */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-gray);
+            color: var(--dark-text);
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        /* Professional Pharmacy Header */
+        .pharmacy-header {
+            background-color: var(--white);
+            border-bottom: 1px solid var(--border-gray);
+            padding: 0.5rem 0;
+        }
+
+        .header-top {
+            background-color: var(--light-blue);
+            padding: 0.5rem 0;
+            font-size: 0.875rem;
+        }
+
+        .header-top-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pharmacy-info {
+            display: flex;
+            gap: 2rem;
+            color: var(--secondary-blue);
+        }
+
+        .pharmacy-info span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .header-actions a {
+            color: var(--secondary-blue);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .header-actions a:hover {
+            color: var(--primary-blue);
+        }
+
+        /* Main Navigation */
+        .navbar {
+            background-color: var(--white);
+            padding: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--secondary-blue);
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-green));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary-blue);
+        }
+
+        .logo-tagline {
+            font-size: 0.75rem;
+            color: var(--neutral-gray);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Navigation Menu */
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            color: var(--dark-text);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .nav-menu a:hover {
+            background-color: var(--light-blue);
+            color: var(--primary-blue);
+        }
+
+        /* Header Actions */
+        .nav-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-input {
+            width: 300px;
+            padding: 0.75rem 1rem;
+            padding-right: 3rem;
+            border: 2px solid var(--border-gray);
+            border-radius: 25px;
+            font-size: 0.9rem;
+            transition: border-color 0.2s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 0.5rem;
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cart-container {
+            position: relative;
+            background-color: var(--accent-green);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .cart-container:hover {
+            background-color: #008F47;
+            transform: translateY(-1px);
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -0.5rem;
+            right: -0.5rem;
+            background-color: var(--accent-red);
+            color: white;
+            border-radius: 50%;
+            width: 1.25rem;
+            height: 1.25rem;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 0.75rem;
+            border-radius: 8px;
+            background-color: transparent;
+            border: none;
+            transition: all 0.2s ease;
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1001;
+        }
+
+        .hamburger-line {
+            width: 24px;
+            height: 3px;
+            background-color: var(--secondary-blue);
+            margin: 3px 0;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        /* Authentication Buttons */
+        .auth-buttons {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            position: relative;
+        }
+
+        .auth-buttons button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .login-btn {
+            background: none;
+            border: 2px solid var(--primary-blue);
+            color: var(--primary-blue);
+        }
+
+        .login-btn:hover {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+
+        .signup-btn {
+            background-color: var(--primary-blue);
+            border: 2px solid var(--primary-blue);
+            color: white;
+        }
+
+        .signup-btn:hover {
+            background-color: var(--secondary-blue);
+            border-color: var(--secondary-blue);
+        }
+
+        /* Dropdown Menu */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: var(--white);
+            min-width: 200px;
+            border: 2px solid var(--border-gray);
+            border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            z-index: 1002;
+            margin-top: 0.5rem;
+        }
+
+        .dropdown-content.show {
+            display: block;
+        }
+
+        .dropdown-content a {
+            color: var(--dark-text);
+            padding: 0.75rem 1rem;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.2s ease;
+            border-bottom: 1px solid var(--border-gray);
+        }
+
+        .dropdown-content a:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-content a:hover {
+            background-color: var(--light-blue);
+            color: var(--primary-blue);
+        }
+
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, var(--secondary-blue) 0%, var(--primary-blue) 100%);
+            color: white;
+            text-align: center;
+            padding: 3rem 0;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Cart Container */
+        .cart-section {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+        }
+
+        .cart-items-container {
+            background-color: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border-gray);
+        }
+
+        .cart-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--secondary-blue);
+        }
+
+        .items-count {
+            color: var(--neutral-gray);
+            font-size: 0.95rem;
+        }
+
+        /* Cart Items */
+        .cart-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--border-gray);
+            position: relative;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-image {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--light-blue), var(--primary-blue));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .prescription-badge {
+            position: absolute;
+            top: 0.5rem;
+            left: 0.5rem;
+            background-color: var(--accent-red);
+            color: white;
+            padding: 0.2rem 0.4rem;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .item-details {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .item-category {
+            color: var(--neutral-gray);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .item-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--secondary-blue);
+            line-height: 1.3;
+        }
+
+        .item-description {
+            color: var(--neutral-gray);
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .item-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: var(--light-gray);
+            border-radius: 8px;
+            padding: 0.25rem;
+        }
+
+        .quantity-btn {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            transition: background-color 0.2s ease;
+        }
+
+        .quantity-btn:hover {
+            background-color: var(--secondary-blue);
+        }
+
+        .quantity-btn:disabled {
+            background-color: var(--neutral-gray);
+            cursor: not-allowed;
+        }
+
+        .quantity-input {
+            width: 3rem;
+            text-align: center;
+            border: none;
+            background: transparent;
+            font-weight: 600;
+            color: var(--secondary-blue);
+        }
+
+        .item-price {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.25rem;
+        }
+
+        .price-current {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--secondary-blue);
+        }
+
+        .price-original {
+            font-size: 0.9rem;
+            color: var(--neutral-gray);
+            text-decoration: line-through;
+        }
+
+        .price-savings {
+            background-color: var(--accent-green);
+            color: white;
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .remove-btn {
+            position: absolute;
+            top: 1rem;
+            right: 0;
+            background: none;
+            border: none;
+            color: var(--neutral-gray);
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .remove-btn:hover {
+            background-color: var(--accent-red);
+            color: white;
+        }
+
+        /* Order Summary */
+        .order-summary {
+            background-color: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 6rem;
+            height: fit-content;
+        }
+
+        .summary-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--secondary-blue);
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border-gray);
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .summary-row.total {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--secondary-blue);
+            padding-top: 1rem;
+            border-top: 2px solid var(--border-gray);
+        }
+
+        .savings-highlight {
+            color: var(--accent-green);
+            font-weight: 600;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            background-color: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 1.5rem;
+        }
+
+        .checkout-btn:hover {
+            background-color: var(--secondary-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+        }
+
+        .continue-shopping {
+            width: 100%;
+            background-color: transparent;
+            color: var(--primary-blue);
+            border: 2px solid var(--primary-blue);
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 1rem;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .continue-shopping:hover {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+
+        /* Trust Indicators */
+        .trust-indicators {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-gray);
+        }
+
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: var(--neutral-gray);
+        }
+
+        .trust-icon {
+            width: 1.5rem;
+            height: 1.5rem;
+            background-color: var(--accent-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+        }
+
+        /* Empty Cart */
+        .empty-cart {
+            background-color: var(--white);
+            border-radius: 12px;
+            padding: 4rem 2rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            grid-column: 1 / -1;
+        }
+
+        .empty-cart h3 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--secondary-blue);
+            margin-bottom: 1rem;
+        }
+
+        .empty-cart p {
+            color: var(--neutral-gray);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+
+        .shop-now-btn {
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.2s ease;
+        }
+
+        .shop-now-btn:hover {
+            background-color: var(--secondary-blue);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--secondary-blue);
+            color: white;
+            padding: 3rem 0 1rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            line-height: 1.6;
+            transition: color 0.2s ease;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            margin-top: 2rem;
+            padding-top: 1rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: flex;
+            }
+
+            .navbar-content {
+                position: relative;
+                padding-left: 4rem;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .search-container {
+                display: none;
+            }
+
+            .auth-buttons {
+                gap: 0.25rem;
+            }
+
+            .auth-buttons button {
+                padding: 0.5rem 1rem;
+                font-size: 0.8rem;
+            }
+
+            .dropdown-content {
+                right: -1rem;
+                min-width: 180px;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .cart-section {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                margin: 1rem auto;
+            }
+
+            .cart-items-container,
+            .order-summary {
+                padding: 1.5rem;
+            }
+
+            .cart-item {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .item-actions {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .pharmacy-info {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-header {
+                padding: 2rem 0;
+            }
+
+            .cart-section {
+                padding: 0 0.5rem;
+            }
+
+            .cart-items-container,
+            .order-summary {
+                padding: 1rem;
+            }
+
+            .cart-item {
+                padding: 1rem 0;
+            }
+
+            .item-image {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Pharmacy Header -->
+    <header class="pharmacy-header">
+        <!-- Main Navigation -->
+        <nav class="navbar">
+            <div class="navbar-content">
+                <a href="Home.html" class="logo">
+                    <div class="logo-icon">+</div>
+                    <div class="logo-text">
+                        <div class="logo-name">Dr. Fatma</div>
+                        <div class="logo-tagline">Trusted Pharmacy</div>
+                    </div>
+                </a>
+
+                <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                    <div class="hamburger-line"></div>
+                    <div class="hamburger-line"></div>
+                    <div class="hamburger-line"></div>
+                </button>
+
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="products.html">Shop Products</a></li>
+                    <li><a href="Home.html#about">About</a></li>
+                </ul>
+
+                <div class="nav-actions">
+                    <div class="search-container">
+                        <input type="text" class="search-input" placeholder="Search medications, health products...">
+                        <button class="search-btn">🔍</button>
+                    </div>
+                    
+                    <a href="shopping-cart.html" class="cart-container">
+                        🛒 Cart
+                        <span class="cart-badge">0</span>
+                    </a>
+
+                    <div class="auth-buttons" id="authButtons">
+                        <button class="login-btn" onclick="window.location.href='login.html'">Login</button>
+                        <button class="signup-btn" onclick="toggleDropdown()">Sign Up</button>
+                        <div id="signupDropdown" class="dropdown-content">
+                            <a href="admin-signup.html">Admin</a>
+                            <a href="pharmacist-signup.html">Pharmacist</a>
+                            <a href="customer-signup.html">Customer</a>
+                            <a href="supplier-signup.html">Supplier</a>
+                            <a href="deliverer-signup.html">Delivery Staff</a>
+                        </div>
+                    </div>
+                    <div class="auth-buttons" id="userMenu" style="display: none;">
+                        <button class="signup-btn" onclick="toggleUserDropdown()">
+                            <span id="userName">User</span> ▼
+                        </button>
+                        <div id="userDropdown" class="dropdown-content">
+                            <a href="products.html">🛍️ Shop Products</a>
+                            <a href="#" onclick="logout()">🚪 Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <h1>Shopping Cart</h1>
+        <p>Review your items and proceed to secure checkout</p>
+    </section>
+
+    <!-- Cart Section -->
+    <section class="cart-section">
+        <!-- Cart Items -->
+        <div class="cart-items-container">
+            <div class="cart-header">
+                <h2 class="cart-title">Your Cart</h2>
+                <span class="items-count">0 items</span>
+            </div>
+
+            <div id="cartItems"></div>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="order-summary">
+            <h3 class="summary-title">Order Summary</h3>
+            
+            <div class="summary-row">
+                <span>Subtotal (0 items):</span>
+                <span>$0.00</span>
+            </div>
+            
+            <div class="summary-row">
+                <span>Your Savings:</span>
+                <span class="savings-highlight">-$13.50</span>
+            </div>
+            
+            <div class="summary-row">
+                <span>Shipping:</span>
+                <span>Free</span>
+            </div>
+            
+            <div class="summary-row">
+                <span>Tax:</span>
+                <span>$0.00</span>
+            </div>
+            
+            <div class="summary-row total">
+                <span>Total:</span>
+                <span>$0.00</span>
+            </div>
+
+            <button class="checkout-btn" onclick="proceedToCheckout()">
+                🔒 Secure Checkout
+            </button>
+            
+            <a href="products.html" class="continue-shopping">
+                Continue Shopping
+            </a>
+
+            <div class="trust-indicators">
+                <div class="trust-item">
+                    <div class="trust-icon">🛡️</div>
+                    <span>Secure SSL encryption</span>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-icon">✓</div>
+                    <span>Licensed pharmacy</span>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-icon">🚚</div>
+                    <span>Free delivery over $50</span>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-icon">💳</div>
+                    <span>Insurance accepted</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Dr. Fatma Pharmacy</h3>
+                <p>Your trusted healthcare partner providing quality medications and professional pharmaceutical services since 2020.</p>
+                <p><strong>Address:</strong> Online</p>
+                <p><strong>Phone:</strong> (012) 7702-2106</p>
+                <p><strong>Emergency:</strong> Available 24/7</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Services</h3>
+                <ul class="footer-links">
+                    <li><a href="#prescriptions">Prescription Refills</a></li>
+                    <li><a href="#consultations">Pharmacy Consultations</a></li>
+                    <li><a href="#vaccines">Vaccinations</a></li>
+                    <li><a href="#delivery">Prescription Delivery</a></li>
+                    <li><a href="#insurance">Insurance Processing</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Health Resources</h3>
+                <ul class="footer-links">
+                    <li><a href="#drug-info">Drug Information</a></li>
+                    <li><a href="#interactions">Drug Interactions</a></li>
+                    <li><a href="#health-tips">Health Tips</a></li>
+                    <li><a href="#conditions">Health Conditions</a></li>
+                    <li><a href="#wellness">Wellness Resources</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Customer Care</h3>
+                <ul class="footer-links">
+                    <li><a href="#contact">Contact Us</a></li>
+                    <li><a href="#hours">Store Hours</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                    <li><a href="#privacy">Privacy Policy</a></li>
+                    <li><a href="#terms">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="header-top">
+            <div class="header-top-content">
+                <div class="pharmacy-info">
+                    <span>📞 (012) 7702-2106</span>
+                    <span>🕒 Open 24/7</span>
+                    <span>🚚 Free Delivery Over $50</span>
+                </div>
+                <div class="header-actions">
+                    <a href="#pharmacy-locator">Find a Pharmacy</a>
+                    <a href="#covid-info">COVID-19 Info</a>
+                    <a href="#insurance">Insurance</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 Dr. Fatma Pharmacy. All rights reserved. Licensed Pharmacy - Reg. #PH-2024-001</p>
+        </div>
+    </footer>
+
+    <script>
+        // Enhanced navigation functionality
+        function toggleMobileMenu() {
+            const navMenu = document.getElementById("navMenu");
+            const toggle = document.querySelector(".mobile-menu-toggle");
+            
+            navMenu.classList.toggle("active");
+            toggle.classList.toggle("active");
+        }
+
+        function toggleDropdown() {
+            document.getElementById("signupDropdown").classList.toggle("show");
+        }
+
+        // Close dropdown when clicking outside
+        window.onclick = function(event) {
+            if (!event.target.matches('.signup-btn') && !event.target.closest('.dropdown-content')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+            if (!event.target.closest('#userMenu')) {
+                const userDropdown = document.getElementById('userDropdown');
+                if (userDropdown) userDropdown.classList.remove('show');
+            }
+        }
+        
+        // Check login status
+        function checkLoginStatus() {
+            const token = localStorage.getItem('userToken');
+            const userData = JSON.parse(localStorage.getItem('userData') || 'null');
+            
+            if (token && userData) {
+                document.getElementById('authButtons').style.display = 'none';
+                document.getElementById('userMenu').style.display = 'flex';
+                document.getElementById('userName').textContent = userData.name || 'User';
+            }
+        }
+        
+        function toggleUserDropdown() {
+            document.getElementById('userDropdown').classList.toggle('show');
+        }
+        
+        function logout() {
+            localStorage.removeItem('userToken');
+            localStorage.removeItem('userData');
+            window.location.href = 'Home.html';
+        }
+        
+        checkLoginStatus();
+
+        // Cart functionality using API
+        async function updateQuantity(productId, change) {
+            const token = localStorage.getItem('userToken');
+            if (!token) {
+                alert('Please login to manage your cart');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            const qtyEl = document.querySelector(`[data-qty="${productId}"]`);
+            const currentQuantity = parseInt(qtyEl.value);
+            const newQuantity = currentQuantity + change;
+            
+            if (newQuantity < 1) {
+                if (!confirm('Remove this item from your cart?')) return;
+            }
+            
+            try {
+                await fetch('/api/cart', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify({
+                        product_id: productId,
+                        quantity: Math.max(newQuantity, 0)
+                    })
+                });
+                loadCart();
+            } catch (error) {
+                console.error('Update cart error:', error);
+                alert('Failed to update cart');
+            }
+        }
+
+        async function removeItem(productId) {
+            const token = localStorage.getItem('userToken');
+            if (!token) return;
+            
+            try {
+                await fetch(`/api/cart?product_id=${productId}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                loadCart();
+            } catch (error) {
+                console.error('Remove item error:', error);
+                alert('Failed to remove item');
+            }
+        }
+
+        function updateCartTotalsFromItems(items) {
+            let subtotal = 0;
+            let totalItems = 0;
+            items.forEach(item => { 
+                const qty = parseInt(item.quantity) || 1;
+                subtotal += (parseFloat(item.price) || 0) * qty;
+                totalItems += qty;
+            });
+            const shipping = subtotal >= 50 ? 0 : 5.99;
+            const tax = subtotal * 0.08; // 8% tax
+            const total = subtotal + tax + shipping;
+            
+            // Update summary display
+            const summaryRows = document.querySelectorAll('.summary-row');
+            if (summaryRows.length >= 5) {
+                summaryRows[0].innerHTML = `<span>Subtotal (${totalItems} item${totalItems !== 1 ? 's' : ''}):</span><span>$${subtotal.toFixed(2)}</span>`;
+                summaryRows[1].innerHTML = `<span>Your Savings:</span><span class="savings-highlight">-$0.00</span>`;
+                summaryRows[2].innerHTML = `<span>Shipping:</span><span>${shipping === 0 ? '<span style="color: var(--accent-green);">Free</span>' : '$' + shipping.toFixed(2)}</span>`;
+                summaryRows[3].innerHTML = `<span>Tax (8%):</span><span>$${tax.toFixed(2)}</span>`;
+                summaryRows[4].innerHTML = `<span>Total:</span><span>$${total.toFixed(2)}</span>`;
+            }
+        }
+
+        function updateItemsCount(items) {
+            let totalItems = 0;
+            if (Array.isArray(items)) {
+                items.forEach(item => { totalItems += parseInt(item.quantity) || 1; });
+            } else {
+                totalItems = items; // backwards compatibility if just a number
+            }
+            const uniqueProducts = Array.isArray(items) ? items.length : items;
+            document.querySelector('.items-count').textContent = `${uniqueProducts} product${uniqueProducts !== 1 ? 's' : ''} (${totalItems} item${totalItems !== 1 ? 's' : ''})`;
+            document.querySelector('.cart-badge').textContent = totalItems;
+        }
+
+        function showEmptyCart() {
+            const cartSection = document.querySelector('.cart-section');
+            cartSection.innerHTML = `
+                <div class="empty-cart">
+                    <h3>Your cart is empty</h3>
+                    <p>Looks like you haven't added any products to your cart yet. Browse our wide selection of health products and medications.</p>
+                    <a href="products.html" class="shop-now-btn">Shop Now</a>
+                </div>
+            `;
+        }
+
+        async function proceedToCheckout() {
+            const token = localStorage.getItem('userToken');
+            
+            if (!token) {
+                alert('Please login to checkout');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+            const address = userData.address || prompt('Enter shipping address:');
+            
+            if (!address) {
+                alert('Shipping address is required');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/orders/checkout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify({ shipping_address: address })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert(`Order placed successfully!\n\nOrder ID: ${data.data.order_id}\nSubtotal: $${data.data.subtotal.toFixed(2)}\nTax: $${data.data.tax.toFixed(2)}\nTotal: $${data.data.total.toFixed(2)}`);
+                    loadCart();
+                } else {
+                    alert(data.message || 'Checkout failed');
+                }
+            } catch (error) {
+                console.error('Checkout error:', error);
+                alert('Checkout failed. Please try again.');
+            }
+        }
+
+        // Search functionality
+        document.addEventListener('DOMContentLoaded', async function() {
+            const searchInput = document.querySelector('.search-input');
+            const searchBtn = document.querySelector('.search-btn');
+            
+            if (searchBtn) {
+                searchBtn.addEventListener('click', function() {
+                    const query = searchInput.value.trim();
+                    if (query) {
+                        window.location.href = `products.html?search=${encodeURIComponent(query)}`;
+                    }
+                });
+            }
+            
+            if (searchInput) {
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        searchBtn.click();
+                    }
+                });
+            }
+
+            // Add fade-out animation for item removal
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeOut {
+                    from { opacity: 1; transform: translateX(0); }
+                    to { opacity: 0; transform: translateX(-100%); }
+                }
+            `;
+            document.head.appendChild(style);
+            await loadCart();
+        });
+
+        async function loadCart() {
+            const token = localStorage.getItem('userToken');
+            
+            if (!token) {
+                showEmptyCart();
+                document.querySelector('.cart-section').innerHTML = `
+                    <div class="empty-cart">
+                        <h3>Please Login</h3>
+                        <p>You need to login to view your shopping cart.</p>
+                        <a href="login.html" class="shop-now-btn">Login Now</a>
+                    </div>
+                `;
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/cart', {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                const data = await response.json();
+                const cart = data.success ? data.data : [];
+                
+                const container = document.getElementById('cartItems');
+                if (!container) return;
+                
+                container.innerHTML = '';
+                
+                if (cart.length === 0) {
+                    showEmptyCart();
+                    return;
+                }
+                
+                cart.forEach(it => {
+                    const div = document.createElement('div');
+                    div.className = 'cart-item';
+                    const unitPrice = parseFloat(it.price) || 0;
+                    const quantity = parseInt(it.quantity) || 1;
+                    const itemTotal = unitPrice * quantity;
+                    div.innerHTML = `
+                        <div class="item-image">${it.requires_prescription ? '💊<div class=\"prescription-badge\">Rx</div>' : '🏥'}</div>
+                        <div class="item-details">
+                            <div class="item-category">${it.category || 'General'}</div>
+                            <h3 class="item-name">${it.name || 'Product'}</h3>
+                            <p class="item-description">Unit Price: $${unitPrice.toFixed(2)}</p>
+                            <div class="item-actions">
+                                <div class="quantity-control">
+                                    <button class="quantity-btn" onclick="updateQuantity('${it.product_id}', -1)">−</button>
+                                    <input type="number" class="quantity-input" data-qty="${it.product_id}" value="${quantity}" readonly>
+                                    <button class="quantity-btn" onclick="updateQuantity('${it.product_id}', 1)">+</button>
+                                </div>
+                                <div class="item-price">
+                                    <span class="price-current">$${itemTotal.toFixed(2)}</span>
+                                    ${quantity > 1 ? `<small style="color: var(--neutral-gray); display: block;">($${unitPrice.toFixed(2)} × ${quantity})</small>` : ''}
+                                </div>
+                            </div>
+                        </div>
+                        <button class="remove-btn" onclick="removeItem('${it.product_id}')">×</button>
+                    `;
+                    container.appendChild(div);
+                });
+                
+                updateItemsCount(cart);
+                updateCartTotalsFromItems(cart);
+            } catch (error) {
+                console.error('Load cart error:', error);
+                showEmptyCart();
+            }
+        }
+    </script>
+</body>
+</html>
