@@ -1,11 +1,15 @@
 {
-  "name": "pharmacy-backend",
+  "name": "dr-fatma-pharmacy",
   "version": "1.0.0",
-  "description": "Dr. Fatma Pharmacy Backend with MongoDB",
+  "description": "Dr. Fatma Pharmacy - Online Pharmacy with MongoDB",
   "main": "server.js",
+  "engines": {
+    "node": "18.x"
+  },
   "scripts": {
     "start": "node server.js",
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "vercel-build": "echo 'Build complete'"
   },
   "dependencies": {
     "express": "^4.18.2",

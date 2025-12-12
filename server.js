@@ -11,29 +11,43 @@ const userRoutes = require('./routes/users');
 
 const app = express();
 
-// MongoDB Connection with optimized settings
-// Use environment variable for Vercel, fallback for local development
+// MongoDB Connection with optimized settings for Vercel serverless
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://Kandil_db_user:Kandil_db_user@cluster0.tm2rhiq.mongodb.net/pharmacy_db?retryWrites=true&w=majority';
 
-mongoose.connect(MONGODB_URI, {
-  maxPoolSize: 10,
-  serverSelectionTimeoutMS: 5000,
-  socketTimeoutMS: 45000,
-})
-  .then(() => {
-    console.log('✅ Connected to MongoDB successfully');
-  })
-  .catch((err) => {
-    console.error('❌ MongoDB connection error:', err.message);
-  });
+// Cache the database connection
+let isConnected = false;
 
-// Keep connection alive
-mongoose.connection.on('disconnected', () => {
-  console.log('MongoDB disconnected, attempting reconnect...');
-});
+const connectDB = async () => {
+  if (isConnected) {
+    console.log('Using existing MongoDB connection');
+    return;
+  }
+
+  try {
+    const db = await mongoose.connect(MONGODB_URI, {
+      maxPoolSize: 10,
+      serverSelectionTimeoutMS: 10000,
+      socketTimeoutMS: 45000,
+      bufferCommands: false,
+    });
+    
+    isConnected = db.connections[0].readyState === 1;
+    console.log('✅ Connected to MongoDB successfully');
+  } catch (err) {
+    console.error('❌ MongoDB connection error:', err.message);
+    throw err;
+  }
+};
+
+// Connect to MongoDB
+connectDB();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -63,7 +77,7 @@ app.get('/admin', (req, res) => {
 
 // Handle all other routes - serve the requested HTML file
 app.get('*.html', (req, res) => {
-  const fileName = req.path.substring(1); // Remove leading slash
+  const fileName = req.path.substring(1);
   res.sendFile(path.join(__dirname, 'View', fileName));
 });
 
@@ -78,9 +92,14 @@ app.use((err, req, res, next) => {
   res.status(500).json({ success: false, message: 'Internal server error' });
 });
 
+// For local development
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
-  console.log(`📁 Serving frontend from: ${path.join(__dirname, 'View')}`);
-});
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on http://localhost:${PORT}`);
+  });
+}
+
+// Export for Vercel
+module.exports = app;
