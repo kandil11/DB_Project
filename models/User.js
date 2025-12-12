@@ -77,9 +77,7 @@ userSchema.methods.getUserTypeName = function() {
   return types[this.userType] || 'Unknown';
 };
 
-// Create indexes for faster queries
-userSchema.index({ email: 1 });
-userSchema.index({ phone: 1 });
+// Create index for userType (email and phone already have indexes from schema)
 userSchema.index({ userType: 1 });
 
 const User = mongoose.model('User', userSchema);

@@ -11,43 +11,23 @@ const userRoutes = require('./routes/users');
 
 const app = express();
 
-// MongoDB Connection with optimized settings for Vercel serverless
+// MongoDB Connection
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://Kandil_db_user:Kandil_db_user@cluster0.tm2rhiq.mongodb.net/pharmacy_db?retryWrites=true&w=majority';
 
-// Cache the database connection
-let isConnected = false;
-
-const connectDB = async () => {
-  if (isConnected) {
-    console.log('Using existing MongoDB connection');
-    return;
-  }
-
-  try {
-    const db = await mongoose.connect(MONGODB_URI, {
-      maxPoolSize: 10,
-      serverSelectionTimeoutMS: 10000,
-      socketTimeoutMS: 45000,
-      bufferCommands: false,
-    });
-    
-    isConnected = db.connections[0].readyState === 1;
+mongoose.connect(MONGODB_URI, {
+  maxPoolSize: 10,
+  serverSelectionTimeoutMS: 5000,
+  socketTimeoutMS: 45000,
+})
+  .then(() => {
     console.log('✅ Connected to MongoDB successfully');
-  } catch (err) {
+  })
+  .catch((err) => {
     console.error('❌ MongoDB connection error:', err.message);
-    throw err;
-  }
-};
-
-// Connect to MongoDB
-connectDB();
+  });
 
 // Middleware
-app.use(cors({
-  origin: '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -92,14 +72,11 @@ app.use((err, req, res, next) => {
   res.status(500).json({ success: false, message: 'Internal server error' });
 });
 
-// For local development
 const PORT = process.env.PORT || 3000;
 
-if (process.env.NODE_ENV !== 'production') {
-  app.listen(PORT, () => {
-    console.log(`🚀 Server running on http://localhost:${PORT}`);
-  });
-}
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`📁 Serving frontend from: ${path.join(__dirname, 'View')}`);
+});
 
-// Export for Vercel
 module.exports = app;
